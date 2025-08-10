@@ -1,29 +1,63 @@
-let fruits = ["🍏 Яблоко", "🍌 Банан", "🍊 Апельсин"];
-let sortAsc = true; // направление сортировки: true = A→Я, false = Я→A
+// Полный список для рандомных кнопок
+const allFruits = [
+  "🍎 Яблоко","🍏 Яблоко зелёное","🍌 Банан","🍊 Апельсин","🍋 Лимон",
+  "🍐 Груша","🍑 Персик","🍒 Вишня","🍓 Клубника","🍍 Ананас",
+  "🥝 Киви","🍇 Виноград","🍈 Дыня","🍉 Арбуз","🥭 Манго"
+];
 
-function updateList() {
-  const out = document.getElementById("output");
-  out.innerHTML = `<p>Наш массив: ${fruits.join(", ")}</p>`;
-  updateCounter();
+// Состояние
+let fruits = ["🍏 Яблоко","🍌 Банан","🍊 Апельсин"];
+let sortAscending = true;
+const autoSortAfterAdd = true;
+
+// DOM
+const output  = document.getElementById("output");
+const counter = document.getElementById("counter");
+const input   = document.getElementById("fruitInput");
+const choices = document.getElementById("choices");
+const sortBtn = document.getElementById("sortBtn");
+
+// Делегирование кликов по быстрым кнопкам (вешаем ОДИН раз)
+choices.addEventListener("click", (e) => {
+  const btn = e.target.closest(".quick-btn");
+  if (!btn) return;
+  addFruit(btn.dataset.fruit);
+});
+
+// Инициализация
+generateChoices();
+updateList();
+
+function updateList(highlightLast = false) {
+  output.innerHTML = fruits
+    .map(f => `<span class="fruit-item">${f}</span>`)
+    .join("");
+
+  counter.textContent = `В массиве: ${fruits.length} шт.`;
+
+  if (highlightLast && output.lastElementChild) {
+    const el = output.lastElementChild;
+    el.classList.add("bounce");
+    el.addEventListener("animationend", () => el.classList.remove("bounce"), { once: true });
+  }
 }
 
-function updateCounter() {
-  const el = document.getElementById("counter");
-  el.textContent = `В массиве: ${fruits.length} шт.`;
-}
-
-function addFruit() {
-  const input = document.getElementById("fruitInput");
-  const value = input.value.trim();
+function addFruit(valueFromBtn) {
+  const value = (valueFromBtn ?? input.value).trim();
   if (!value) return;
+
   fruits.push(value);
   input.value = "";
-  updateList();
+
+  if (autoSortAfterAdd) sortNow(false);
+  updateList(true);
 }
 
 function removeFruit() {
-  if (fruits.length) fruits.pop();
-  updateList();
+  if (fruits.length) {
+    fruits.pop();
+    updateList();
+  }
 }
 
 function clearFruits() {
@@ -32,26 +66,43 @@ function clearFruits() {
 }
 
 function toggleSort() {
-  // копию сортируем, чтобы сравнение шло по строкам одинаково,
-  // здесь сортируем сам массив — нормально для этой задачи
-  fruits.sort((a, b) => a.localeCompare(b, "ru")); // A→Я
-  if (!sortAsc) fruits.reverse();                  // Я→A
-  sortAsc = !sortAsc;
-  updateList();
+  sortAscending = !sortAscending;
+  sortNow();
 }
 
-function updateList() {
-  const output = document.getElementById("output");
-  output.innerHTML = fruits
-    .map(fruit => `<span class="fruit-item">${fruit}</span>`)
+function normalize(s) {
+  // убираем всё, что не буква, и в нижний регистр
+  return s.replace(/[^\p{Letter}]+/gu, "").toLowerCase();
+}
+
+function sortNow(forceUpdate = true) {
+  fruits.sort((a, b) => {
+    const A = normalize(a);
+    const B = normalize(b);
+    return sortAscending
+      ? A.localeCompare(B, "ru")
+      : B.localeCompare(A, "ru");
+  });
+
+  sortBtn.textContent = sortAscending ? "Сортировать A→Я" : "Сортировать Я→A";
+  if (forceUpdate) updateList();
+}
+
+
+// Рандомные быстрые кнопки
+function generateChoices() {
+  const picked = pickRandomUnique(allFruits, 5);
+  choices.innerHTML = picked
+    .map(f => `<button type="button" class="quick-btn" data-fruit="${f}">${f}</button>`)
     .join("");
-  document.getElementById("counter").textContent = `В массиве: ${fruits.length} шт.`;
 }
 
-function addQuickFruit(fruit) {
-  fruits.push(fruit);
-  updateList();
+function pickRandomUnique(arr, count) {
+  const pool = [...arr];
+  const out = [];
+  while (pool.length && out.length < count) {
+    const i = Math.floor(Math.random() * pool.length);
+    out.push(pool.splice(i, 1)[0]);
+  }
+  return out;
 }
-
-
-updateList();

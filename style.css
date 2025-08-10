@@ -1,84 +1,124 @@
+:root {
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --text: #222;
+  --muted: #667085;
+  --primary: #2e7df6;
+  --primary-ghost: #e7f0ff;
+  --danger: #ef4444;
+  --danger-ghost: #fdecec;
+  --chip: #eef2ff;
+}
+
+* { box-sizing: border-box; }
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
-  color: #333;
-  text-align: center;
   margin: 0;
-  padding: 20px;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background: radial-gradient(1000px 800px at 50% -10%, #fff 0%, #f0f2f8 70%), var(--bg);
+}
+
+.container {
+  max-width: 880px;
+  margin: 48px auto;
+  padding: 24px 28px 36px;
+  background: var(--card);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.06);
 }
 
 h1 {
-  color: #444;
+  margin: 0 0 18px;
+  font-weight: 800;
+  letter-spacing: .3px;
 }
 
-#output {
-  margin: 20px auto;
-  padding: 10px;
+.pill-list {
   display: flex;
+  gap: 10px;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
+  margin: 14px 0 18px;
 }
 
 .fruit-item {
-  background-color: #e1f5fe;
-  border: 1px solid #81d4fa;
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--chip);
+  border-radius: 999px;
+  font-weight: 600;
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.05);
 }
 
-input[type="text"] {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  outline: none;
-  margin-right: 5px;
+/* Быстрый выбор */
+.choices {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 6px 0 6px;
 }
-
-input[type="text"]:focus {
-  border-color: #2196f3;
-  box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
-}
-
-button {
-  background-color: #2196f3;
-  color: white;
+.quick-btn {
   border: none;
-  padding: 8px 14px;
-  margin: 5px;
-  border-radius: 8px;
+  background: var(--primary-ghost);
+  color: var(--primary);
+  padding: 8px 12px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: transform .1s ease, background .15s ease;
+  font-weight: 600;
 }
+.quick-btn:hover { transform: translateY(-1px); background: #dcebff; }
+.quick-btn:active { transform: translateY(0); }
 
-button:hover {
-  background-color: #1976d2;
-}
-
-#counter {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #555;
-}
-
-#quick-fruits {
-  margin: 15px 0;
+/* Панель управления */
+.controls {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  justify-content: center;
+  align-items: center;
 }
 
-#quick-fruits span {
-  background-color: #fff3cd;
-  border: 1px solid #ffeeba;
-  padding: 6px 12px;
-  border-radius: 20px;
+input[type="text"]{
+  padding: 9px 12px;
+  border: 1px solid #e4e6eb;
+  border-radius: 10px;
+  min-width: 220px;
+  outline: none;
+}
+input[type="text"]:focus{ border-color: #c8d7ff; box-shadow: 0 0 0 3px #e9f0ff; }
+
+button{
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: transform .08s ease, filter .15s ease, background .2s ease;
+}
+button:hover{ filter: brightness(1.05); }
+button:active{ transform: translateY(1px); }
+
+button.ghost{
+  background: #edf2ff;
+  color: #305ff6;
+}
+button.danger{
+  background: var(--danger);
+}
+button.danger.ghost{
+  background: var(--danger-ghost);
+  color: #b91c1c;
 }
 
-#quick-fruits span:hover {
-  background-color: #ffe082;
+.muted{ color: var(--muted); margin-top: 10px; }
+
+/* Анимация подпрыгивания */
+@keyframes bounceIn {
+  0%   { transform: translateY(-6px) scale(.98); filter: brightness(1.15); }
+  50%  { transform: translateY(0)    scale(1.06); }
+  100% { transform: translateY(0)    scale(1); }
 }
+.bounce { animation: bounceIn .35s ease; }
