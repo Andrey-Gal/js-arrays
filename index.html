@@ -4,9 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Массивы в JS</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Работа с массивами</h1>
+
+  <div id="quick-fruits">
+  <span onclick="addQuickFruit('🍎 Яблоко')">🍎 Яблоко</span>
+  <span onclick="addQuickFruit('🍌 Банан')">🍌 Банан</span>
+  <span onclick="addQuickFruit('🍊 Апельсин')">🍊 Апельсин</span>
+  <span onclick="addQuickFruit('🍇 Виноград')">🍇 Виноград</span>
+  <span onclick="addQuickFruit('🍓 Клубника')">🍓 Клубника</span>
+</div>
+
 
   <div id="output"></div>
 
@@ -14,7 +24,7 @@
     <input id="fruitInput" type="text" placeholder="Введите фрукт" />
     <button onclick="addFruit()">Добавить фрукт</button>
     <button onclick="removeFruit()">Удалить последний фрукт</button>
-    
+
     <!-- рядом с другими кнопками -->
 <button onclick="clearFruits()">Удалить всё</button>
 <button onclick="toggleSort()">Сортировать A↔Я</button>

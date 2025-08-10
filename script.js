@@ -40,4 +40,18 @@ function toggleSort() {
   updateList();
 }
 
+function updateList() {
+  const output = document.getElementById("output");
+  output.innerHTML = fruits
+    .map(fruit => `<span class="fruit-item">${fruit}</span>`)
+    .join("");
+  document.getElementById("counter").textContent = `В массиве: ${fruits.length} шт.`;
+}
+
+function addQuickFruit(fruit) {
+  fruits.push(fruit);
+  updateList();
+}
+
+
 updateList();
