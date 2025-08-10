@@ -14,6 +14,14 @@
     <input id="fruitInput" type="text" placeholder="Введите фрукт" />
     <button onclick="addFruit()">Добавить фрукт</button>
     <button onclick="removeFruit()">Удалить последний фрукт</button>
+    
+    <!-- рядом с другими кнопками -->
+<button onclick="clearFruits()">Удалить всё</button>
+<button onclick="toggleSort()">Сортировать A↔Я</button>
+
+<!-- где-нибудь под списком (или сразу под <div id="output">) -->
+<p id="counter" style="margin-top:8px;color:#555;"></p>
+
   </div>
 
   <script src="script.js"></script>
